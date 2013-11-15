@@ -13,6 +13,7 @@ class collectd::params {
   }
 
   $config_file_path = $::osfamily ? {
+    'RedHat'=> '/etc/collectd.conf',
     default => '/etc/collectd/collectd.conf',
   }
 
@@ -29,7 +30,19 @@ class collectd::params {
   }
 
   $config_dir_path = $::osfamily ? {
-    default => '/etc/collectd',
+    'RedHat' => '/etc/collectd.d',
+    default  => '/etc/collectd',
+  }
+
+  $confd_dir_path = $::osfamily ? {
+    'RedHat' => '/etc/collectd.d',
+    default  => '/etc/collectd/collectd.d',
+  }
+
+  $init_config_file_path = $::osfamily ? {
+    'Redhat' => '/etc/sysconfig/collectd',
+    'Debian' => '/etc/default/collectd',
+    default  => '',
   }
 
   case $::osfamily {

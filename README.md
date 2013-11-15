@@ -80,11 +80,26 @@ The module provides also a generic define to manage any collectd configuration f
                                   "puppet:///modules/site/collectd/collectd.conf" ],
         }
 
+* You can provide a custom template (or content or source) also for the init configuration script for which eventually use a dedicated config hash with init_config_file_options_hash paramenter
+
+        class { 'collectd':
+          init_config_file_template      => 'site/collectd/collectd.init.erb',
+          init_config_file_options_hash  => {
+            opt  => 'value',
+            opt2 => 'value2',
+          },
+        }
 
 * Use custom source directory for the whole configuration directory, where present.
 
         class { 'collectd':
           config_dir_source  => 'puppet:///modules/site/collectd/conf/',
+        }
+
+* Use custom source directory for the whole config.d directory (on RedHat family config_dir_path == confd_dir_path).
+
+        class { 'collectd':
+          confd_dir_source  => 'puppet:///modules/site/collectd/collectd.d',
         }
 
 * Use custom source directory for the whole configuration directory and purge all the local files that are not on the dir.

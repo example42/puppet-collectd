@@ -32,6 +32,17 @@ class collectd (
   $config_dir_purge          = false,
   $config_dir_recurse        = true,
 
+  $confd_dir_path            = $collectd::params::confd_dir_path,
+  $confd_dir_source          = undef,
+  $confd_dir_purge           = false,
+  $confd_dir_recurse         = true,
+
+  $init_config_file_path          = $collectd::params::init_config_file_path,
+  $init_config_file_source        = undef,
+  $init_config_file_template      = undef,
+  $init_config_file_content       = undef,
+  $init_config_file_options_hash  = { } ,
+
   $dependency_class          = undef,
   $my_class                  = undef,
 
@@ -54,22 +65,23 @@ class collectd (
   validate_bool($service_enable)
   validate_bool($config_dir_recurse)
   validate_bool($config_dir_purge)
+  validate_bool($confd_dir_recurse)
+  validate_bool($confd_dir_purge)
   if $config_file_options_hash { validate_hash($config_file_options_hash) }
+  if $init_config_file_options_hash { validate_hash($init_config_file_options_hash) }
   if $monitor_options_hash { validate_hash($monitor_options_hash) }
   if $firewall_options_hash { validate_hash($firewall_options_hash) }
 
   $config_file_owner          = $collectd::params::config_file_owner
   $config_file_group          = $collectd::params::config_file_group
   $config_file_mode           = $collectd::params::config_file_mode
-
   $manage_config_file_content = default_content($config_file_content, $config_file_template)
-
+  $manage_init_config_file_content = default_content($init_config_file_content, $init_config_file_template)
   $manage_config_file_notify  = $config_file_notify ? {
     'class_default' => 'Service[collectd]',
     ''              => undef,
     default         => $config_file_notify,
   }
-
   if $package_ensure == 'absent' {
     $manage_service_enable = undef
     $manage_service_ensure = stopped
@@ -83,20 +95,19 @@ class collectd (
   }
 
 
+  # Prerequisites
+
+  if $collectd::dependency_class {
+    include $collectd::dependency_class
+  }
+
+
   # Resources managed
 
   if $collectd::package_name {
     package { 'collectd':
       ensure   => $collectd::package_ensure,
       name     => $collectd::package_name,
-    }
-  }
-
-  if $collectd::service_name {
-    service { 'collectd':
-      ensure     => $collectd::manage_service_ensure,
-      name       => $collectd::service_name,
-      enable     => $collectd::manage_service_enable,
     }
   }
 
@@ -114,6 +125,20 @@ class collectd (
     }
   }
 
+  if $collectd::init_config_file_path {
+    file { 'collectd.init.conf':
+      ensure  => $collectd::config_file_ensure,
+      path    => $collectd::init_config_file_path,
+      mode    => $collectd::config_file_mode,
+      owner   => $collectd::config_file_owner,
+      group   => $collectd::config_file_group,
+      source  => $collectd::init_config_file_source,
+      content => $collectd::manage_init_config_file_content,
+      notify  => $collectd::manage_config_file_notify,
+      require => $collectd::config_file_require,
+    }
+  }
+
   if $collectd::config_dir_source {
     file { 'collectd.dir':
       ensure  => $collectd::config_dir_ensure,
@@ -122,17 +147,30 @@ class collectd (
       recurse => $collectd::config_dir_recurse,
       purge   => $collectd::config_dir_purge,
       force   => $collectd::config_dir_purge,
-      notify  => $collectd::manage_config_file_notify,
-      require => $collectd::config_file_require,
+    }
+  }
+
+  if $collectd::confd_dir_path {
+    file { 'collectd_d.dir':
+      ensure  => $collectd::config_dir_ensure,
+      path    => $collectd::confd_dir_path,
+      source  => $collectd::confd_dir_source,
+      recurse => $collectd::confd_dir_recurse,
+      purge   => $collectd::confd_dir_purge,
+      force   => $collectd::confd_dir_purge,
+    }
+  }
+
+  if $collectd::service_name {
+    service { 'collectd':
+      ensure     => $collectd::manage_service_ensure,
+      name       => $collectd::service_name,
+      enable     => $collectd::manage_service_enable,
     }
   }
 
 
-  # Extra classes
-
-  if $collectd::dependency_class {
-    include $collectd::dependency_class
-  }
+# Extra classes
 
   if $collectd::my_class {
     include $collectd::my_class
@@ -153,4 +191,3 @@ class collectd (
   }
 
 }
-
