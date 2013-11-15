@@ -29,6 +29,7 @@ Refer to http://github.com/stdmod/ for complete documentation on the common para
 * This module installs the collectd package
 * Enables the collectd service
 * Can manage all the configuration files (by default no file is changed)
+* Can install and configure collectd plugins
 
 ###Setup Requirements
 * PuppetLabs [stdlib module](https://github.com/puppetlabs/puppetlabs-stdlib)
@@ -54,6 +55,18 @@ The module provides also a generic define to manage any collectd configuration f
           content => '# Test',
         }
 
+You can place the configurations of a plugin either in the main config file or in a file managed with the generic define collect::conf or with the dedicated define collectd::plugin (which can also install the relevant package):
+
+        collectd::plugin { 'mysql':
+          config_file_template     => 'site/collectd/plugin/mysql.erb',
+          config_file_options_hash => {
+            host     => 'localhost',
+            user     => 'wordpress',
+            password => 'secret',
+            database => 'wordpress',
+          },
+          package_install          => true,  # Default: false
+        }
 
 ##Usage
 
