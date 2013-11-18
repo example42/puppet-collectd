@@ -45,7 +45,6 @@
 # [*config_file_group*]
 # [*config_file_notify*]
 # [*config_file_require*]
-# [*config_file_replace*]
 #   String. Optional. Default: undef
 #   All these parameters map directly to the created file attributes.
 #   If not defined the module's defaults are used.
@@ -77,7 +76,6 @@ define collectd::plugin (
   $config_file_mode         = undef,
   $config_file_owner        = undef,
   $config_file_group        = undef,
-  $config_file_replace      = undef,
   $config_file_notify       = 'class_default',
   $config_file_require      = undef,
 
@@ -96,7 +94,6 @@ define collectd::plugin (
   $manage_owner   = pickx($config_file_owner, $collectd::config_file_owner)
   $manage_group   = pickx($config_file_group, $collectd::config_file_group)
   $manage_require = pickx($config_file_require, $collectd::config_file_require)
-  $manage_replace = pickx($config_file_replace, $collectd::config_file_replace)
   $manage_notify  = $config_file_notify ? {
     'class_default' => $collectd::manage_config_file_notify,
     default         => $config_file_notify,
@@ -121,7 +118,6 @@ define collectd::plugin (
     group   => $manage_group,
     require => $manage_require,
     notify  => $manage_notify,
-    replace => $manage_replace,
   }
 
 }
