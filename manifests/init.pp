@@ -179,7 +179,7 @@ class collectd (
   if $collectd::monitor_class {
     class { $collectd::monitor_class:
       options_hash => $collectd::monitor_options_hash,
-      scope_hash   => {}, # TODO: Find a good way to inject class' scope
+      scope_hash   => {}, # TODO: Find a good way to inject class' scope
     }
   }
 
