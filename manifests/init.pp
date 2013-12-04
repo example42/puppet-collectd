@@ -112,9 +112,8 @@ class collectd (
   }
 
   if $collectd::config_file_path {
-    file { 'collectd.conf':
+    file { $collectd::config_file_path:
       ensure  => $collectd::config_file_ensure,
-      path    => $collectd::config_file_path,
       mode    => $collectd::config_file_mode,
       owner   => $collectd::config_file_owner,
       group   => $collectd::config_file_group,
@@ -122,13 +121,13 @@ class collectd (
       content => $collectd::manage_config_file_content,
       notify  => $collectd::manage_config_file_notify,
       require => $collectd::config_file_require,
+      alias   => 'collectd.conf',
     }
   }
 
   if $collectd::init_config_file_path {
-    file { 'collectd.init.conf':
+    file { $collectd::init_config_file_path:
       ensure  => $collectd::config_file_ensure,
-      path    => $collectd::init_config_file_path,
       mode    => $collectd::config_file_mode,
       owner   => $collectd::config_file_owner,
       group   => $collectd::config_file_group,
@@ -136,28 +135,29 @@ class collectd (
       content => $collectd::manage_init_config_file_content,
       notify  => $collectd::manage_config_file_notify,
       require => $collectd::config_file_require,
+      alias   => 'collectd.init.conf',
     }
   }
 
   if $collectd::config_dir_source {
-    file { 'collectd.dir':
+    file { $collectd::config_dir_path:
       ensure  => $collectd::config_dir_ensure,
-      path    => $collectd::config_dir_path,
       source  => $collectd::config_dir_source,
       recurse => $collectd::config_dir_recurse,
       purge   => $collectd::config_dir_purge,
       force   => $collectd::config_dir_purge,
+      alias   => 'collectd.dir',
     }
   }
 
   if $collectd::confd_dir_path {
-    file { 'collectd_d.dir':
+    file { $collectd::confd_dir_path:
       ensure  => $collectd::config_dir_ensure,
-      path    => $collectd::confd_dir_path,
       source  => $collectd::confd_dir_source,
       recurse => $collectd::confd_dir_recurse,
       purge   => $collectd::confd_dir_purge,
       force   => $collectd::confd_dir_purge,
+      alias   => 'collectd_d.dir',
     }
   }
 

@@ -108,16 +108,16 @@ define collectd::plugin (
     }
   }
 
-  file { "collectd_plugin_${name}.conf":
+  file { $manage_path:
     ensure  => $ensure,
     source  => $config_file_source,
     content => $manage_content,
-    path    => $manage_path,
     mode    => $manage_mode,
     owner   => $manage_owner,
     group   => $manage_group,
     require => $manage_require,
     notify  => $manage_notify,
+    alias   => "collectd_plugin_${name}.conf",
   }
 
 }
