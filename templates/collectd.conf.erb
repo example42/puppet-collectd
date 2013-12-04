@@ -1,6 +1,6 @@
 # File Managed by Puppet
 
-Hostname    "<%= @fqdn %>"
+Hostname    "<%= scope.lookupvar('::fqdn) %>"
 FQDNLookup   false
 #BaseDir     "/usr/var/lib/collectd"
 #PIDFile     "/usr/var/run/collectd.pid"
