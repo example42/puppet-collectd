@@ -82,17 +82,17 @@ define collectd::conf (
     default         => $config_file_notify,
   }
 
-  file { "collectd_conf_${name}":
+  file { $manage_path:
     ensure  => $ensure,
     source  => $source,
     content => $manage_content,
-    path    => $manage_path,
     mode    => $manage_mode,
     owner   => $manage_owner,
     group   => $manage_group,
     require => $manage_require,
     notify  => $manage_notify,
     replace => $manage_replace,
+    alias   => "collectd_conf_${name}",
   }
 
 }
