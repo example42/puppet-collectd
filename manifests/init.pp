@@ -21,7 +21,7 @@ class collectd (
   $config_file_path          = $collectd::params::config_file_path,
   $config_file_require       = 'Package[collectd]',
   $config_file_notify        = 'Service[collectd]',
-  $config_file_replace       = undef,
+  $config_file_replace       = true,
   $config_file_source        = undef,
   $config_file_template      = undef,
   $config_file_content       = undef,
