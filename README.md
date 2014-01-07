@@ -68,6 +68,32 @@ You can place the configurations of a plugin either in the main config file or i
           package_install          => true,  # Default: false
         }
 
+
+A custom plugin template is available as well:
+
+          collectd::plugin { 'rrdtool':
+            config_file_options_hash => {
+              'DataDir'         => '"/var/lib/collectd/"',
+              'RRARows'         => '1337',
+              'RRATimespan'     => [ '10',
+                                     '100',
+                                     '1000' ],
+              'XFF'             => '0.25',
+            }
+          }
+
+This results in:
+
+  <Plugin rrdtool>
+      DataDir       "/var/lib/collectd/"
+      RRARows       1337
+      RRATimespan   10
+      RRATimespan   100
+      RRATimespan   1000
+      XFF           0.25
+  </Plugin>
+
+
 ##Usage
 
 * A common way to use this module involves the management of the main configuration file via a custom template (provided in a custom site module):
