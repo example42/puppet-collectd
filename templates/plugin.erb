@@ -1,5 +1,14 @@
+# File managed by Puppet
+
 <Plugin <%= @name -%>>
-    <% @config_file_options_hash.each { |key, value| -%>
-        <%= "#{key}\t\t#{value}" %>
+    <% @config_file_options_hash.each { |key, value| 
+        if value.is_a?(String) { -%>
+            <%= "#{key}\t\t#{value}" %>
+        <% else
+            value.each { |subvalue| -%>
+                <%= "#{key}\t\t#{value}" %>
+        <% }
+           end -%>
+        
     <% } -%>
 </Plugin>
