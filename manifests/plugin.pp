@@ -88,8 +88,14 @@ define collectd::plugin (
 
   include collectd
 
+  if $config_file_options_hash and ! $config_file_content and ! $config_file_template {
+    $use_config_file_content = template('collectd/plugin.erb')
+  } else {
+    $use_config_file_content = undef
+  }
+
   $manage_path    = pickx($config_file_path, "${collectd::confd_dir_path}/${name}.conf")
-  $manage_content = default_content($config_file_content, $config_file_template)
+  $manage_content = default_content($use_config_file_content, $config_file_template)
   $manage_mode    = pickx($config_file_mode, $collectd::config_file_mode)
   $manage_owner   = pickx($config_file_owner, $collectd::config_file_owner)
   $manage_group   = pickx($config_file_group, $collectd::config_file_group)

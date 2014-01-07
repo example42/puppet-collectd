@@ -1,0 +1,5 @@
+<Plugin <%= @name -%>>
+    <% @config_file_options_hash.each { |key, value| -%>
+        <%= "#{key}\t\t#{value}" %>
+    <% } -%>
+</Plugin>
