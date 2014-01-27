@@ -1,5 +1,7 @@
 # File managed by Puppet
 
+LoadPlugin <%= @name -%>
+
 <Plugin <%= @name -%>>
     <% @config_file_options_hash.each { |key, value|
         if ! value.is_a?(Array) -%>

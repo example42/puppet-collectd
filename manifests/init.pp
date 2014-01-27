@@ -146,6 +146,7 @@ class collectd (
       recurse => $collectd::config_dir_recurse,
       purge   => $collectd::config_dir_purge,
       force   => $collectd::config_dir_purge,
+      require => $collectd::config_file_require,
       alias   => 'collectd.dir',
     }
   }
