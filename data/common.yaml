@@ -1,8 +1,0 @@
----
-package_name: 'collectd'
-service_name: 'collectd'
-config_file_path:  '/etc/collectd/collectd.conf'
-config_file_mode: '0644'
-config_file_owner: 'root'
-config_file_group: 'root'
-config_dir_path: '/etc/collectd'
