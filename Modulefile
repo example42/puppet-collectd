@@ -1,5 +1,5 @@
 name          'example42-collectd'
-version '3.0.4'
+version '3.0.5'
 author        'Alessandro Franceschi'
 project_page  'http://www.example42.com'
 source        'https://github.com/example42/puppet-collectd'
