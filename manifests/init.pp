@@ -158,6 +158,7 @@ class collectd (
       recurse => $collectd::confd_dir_recurse,
       purge   => $collectd::confd_dir_purge,
       force   => $collectd::confd_dir_purge,
+      require => $collectd::config_file_require,
       alias   => 'collectd_d.dir',
     }
   }

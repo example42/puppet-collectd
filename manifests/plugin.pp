@@ -91,7 +91,7 @@ define collectd::plugin (
   if $config_file_options_hash and ! $config_file_content and ! $config_file_template {
     $use_config_file_content = template('collectd/plugin.erb')
   } else {
-    $use_config_file_content = undef
+    $use_config_file_content = $config_file_content
   }
 
   $manage_path    = pickx($config_file_path, "${collectd::confd_dir_path}/${name}.conf")
